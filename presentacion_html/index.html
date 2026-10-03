@@ -19,7 +19,7 @@
       <span><strong>Calculadora Neuronal</strong><small>Laboratorio 6 · 22193</small></span>
     </a>
     <div class="deck-actions">
-      <span class="truth-badge" title="El formulario externo todavía no se ha enviado"><span aria-hidden="true"></span> Registro pendiente</span>
+      <span class="truth-badge is-complete" title="El formulario confirmó el envío y la huella se mantuvo"><span aria-hidden="true"></span> Registro enviado</span>
       <button class="text-button" id="toc-button" type="button" aria-haspopup="dialog" aria-controls="toc-dialog">Índice</button>
       <button class="text-button" id="notes-button" type="button" aria-pressed="false">Guion</button>
       <button class="icon-button" id="fullscreen-button" type="button" aria-label="Activar pantalla completa" title="Pantalla completa (F)">
@@ -198,20 +198,20 @@ logits = salida(
     <section class="slide" id="slide-13" data-title="Reproducibilidad" aria-labelledby="title-13">
       <div class="slide-heading"><span class="section-index">12</span><div><h2 id="title-13">Cada conclusión puede rastrearse hasta un artefacto</h2><p>El repositorio separa machote, ejecución, pesos, evidencia y documentación.</p></div></div>
       <div class="repo-map">
-        <div class="repo-tree" aria-label="Árbol de carpetas del repositorio"><span class="folder">notebooks/</span><small>machote intacto + versión final</small><span class="folder">modelos_lab6/</span><small>tres checkpoints congelados</small><span class="folder">tareas/</span><small>documentación de bloques 0–7</small><span class="folder">artifacts/</span><small>métricas, figuras y validación</small><span class="folder">informe/</span><small>LaTeX + PDF de 15 páginas</small><span class="folder active-folder">presentacion_html/</span><small>esta presentación autónoma</small></div>
-        <div class="trace-flow"><div><b>01</b><span>Construir desde el machote</span></div><div><b>02</b><span>Entrenar y congelar pesos</span></div><div><b>03</b><span>Medir y localizar fallos</span></div><div><b>04</b><span>Integrar outputs al notebook</span></div><div><b>05</b><span>Validar 41 condiciones</span></div></div>
+        <div class="repo-tree" aria-label="Árbol de carpetas del repositorio"><span class="folder">notebooks/</span><small>machote intacto + versión final</small><span class="folder">modelos_lab6/</span><small>tres checkpoints congelados</small><span class="folder">tareas/</span><small>documentación de bloques 0–7</small><span class="folder">artifacts/</span><small>métricas, figuras y validación</small><span class="folder">informe/</span><small>LaTeX + PDF de 14 páginas</small><span class="folder active-folder">presentacion_html/</span><small>esta presentación autónoma</small></div>
+        <div class="trace-flow"><div><b>01</b><span>Construir desde el machote</span></div><div><b>02</b><span>Entrenar y congelar pesos</span></div><div><b>03</b><span>Medir y localizar fallos</span></div><div><b>04</b><span>Registrar la entrega</span></div><div><b>05</b><span>Validar 43 condiciones</span></div></div>
       </div>
       <div class="checkpoint-strip"><span>base atención <code>7dd56f9acf5d</code></span><span>sin atención <code>11a6346d696d</code></span><span>torneo <code>94e198ec75ec</code></span></div>
       <aside class="speaker-notes"><strong>Guion</strong><p>El notebook oficial en la raíz conserva el nombre solicitado. Los pesos permiten cargar los modelos sin reentrenar y las huellas detectan cualquier cambio.</p></aside>
     </section>
 
     <section class="slide" id="slide-14" data-title="Cumplimiento" aria-labelledby="title-14">
-      <div class="slide-heading"><span class="section-index">13</span><div><h2 id="title-14">La parte técnica está completa; una acción externa sigue pendiente</h2><p>Estado exacto del repositorio, sin presentar como realizado lo que aún no ocurrió.</p></div></div>
+      <div class="slide-heading"><span class="section-index">13</span><div><h2 id="title-14">Laboratorio 6 completo; el torneo queda reservado</h2><p>El registro ya fue aceptado y la única acción futura pertenece al Laboratorio 7.</p></div></div>
       <div class="compliance-layout">
-        <div class="check-cluster"><div><span>✓</span><p><strong>33 celdas preservadas</strong>Dos verificaciones oficiales intactas.</p></div><div><span>✓</span><p><strong>14 celdas ejecutadas</strong>Conteos consecutivos y cero errores.</p></div><div><span>✓</span><p><strong>41 controles superados</strong>Modelos, figuras, límites y documentos.</p></div><div><span>✓</span><p><strong>5 de 5 trampas fallan</strong>Evidencia adversarial real.</p></div></div>
-        <div class="pending-panel"><span class="pending-icon" aria-hidden="true">!</span><h3>Registro del curso</h3><p>La celda está preparada, pero aún no se ha enviado el formulario. Requiere conexión a internet y participación del estudiante.</p><ol><li>Ejecutar hasta la sección Entrega.</li><li>Confirmar “registro enviado”.</li><li>Guardar el notebook con la salida visible.</li></ol><p class="do-not-run">La clave del torneo permanece correctamente en <code>None</code>.</p></div>
+        <div class="check-cluster"><div><span>✓</span><p><strong>33 celdas preservadas</strong>Dos verificaciones oficiales intactas.</p></div><div><span>✓</span><p><strong>15 celdas ejecutadas</strong>Conteos consecutivos y cero errores hasta Entrega.</p></div><div><span>✓</span><p><strong>43 controles superados</strong>Modelos, registro, figuras y documentos.</p></div><div><span>✓</span><p><strong>5 de 5 trampas fallan</strong>Evidencia adversarial real.</p></div></div>
+        <div class="pending-panel completed-panel"><span class="pending-icon" aria-hidden="true">✓</span><h3>Registro confirmado</h3><p>El formulario respondió “OK - registro enviado al formulario del curso”.</p><ol><li>Kernel reiniciado.</li><li>Ejecución ordenada hasta Entrega.</li><li>Huella posterior: <code>94e198ec75ec</code>.</li></ol><p class="do-not-run">El torneo no se ejecutó: <code>CLAVE = None</code> hasta el Laboratorio 7.</p></div>
       </div>
-      <aside class="speaker-notes"><strong>Guion</strong><p>El laboratorio contiene el código y la evidencia, pero la rúbrica exige confirmar el envío externo. La presentación no afirma que ya ocurrió.</p></aside>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La confirmación del formulario quedó visible en el notebook oficial. La huella coincide con el checkpoint y la celda del torneo continúa intacta y sin ejecución.</p></aside>
     </section>
 
     <section class="slide slide-closing" id="slide-15" data-title="Conclusiones" aria-labelledby="title-15">

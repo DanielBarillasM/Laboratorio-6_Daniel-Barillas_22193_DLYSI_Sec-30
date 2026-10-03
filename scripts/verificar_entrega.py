@@ -67,11 +67,16 @@ def main() -> None:
               if cell.cell_type == "code" for output in cell.get("outputs", [])
               if output.output_type == "error"]
     require(not errors, "No hay salidas de error en el notebook.", checks)
-    executed = [cell.execution_count for cell in final.cells[:30] if cell.cell_type == "code"]
-    require(executed == list(range(1, 15)),
-            "Las 14 celdas académicas previas al registro tienen conteos consecutivos.", checks)
-    require(final.cells[30].execution_count is None,
-            "El formulario externo no fue enviado automáticamente.", checks)
+    executed = [cell.execution_count for cell in final.cells[:31] if cell.cell_type == "code"]
+    require(executed == list(range(1, 16)),
+            "Las 15 celdas hasta Entrega tienen conteos consecutivos.", checks)
+    registration_text = stream_text(final.cells[30])
+    require(final.cells[30].execution_count == 15,
+            "La celda de Entrega fue ejecutada al final de la secuencia.", checks)
+    require("OK - registro enviado al formulario del curso" in registration_text,
+            "El notebook conserva la confirmación del formulario.", checks)
+    require("94e198ec75ec" in registration_text,
+            "La salida de Entrega conserva la huella 94e198ec75ec.", checks)
     require(final.cells[32].execution_count is None,
             "La celda del torneo no fue ejecutada antes de recibir la clave.", checks)
     require("OK - atención aditiva correcta" in stream_text(final.cells[10]),
@@ -153,9 +158,8 @@ def main() -> None:
                 for path in [html_presentation]),
             "El README enlaza la presentación HTML interactiva.", checks)
 
-    registration_marker = ROOT / "modelos_lab6" / "registro_enviado.txt"
     result = {
-        "estado": "APROBADO_CON_ACCION_EXTERNA_PENDIENTE" if not registration_marker.exists() else "APROBADO",
+        "estado": "APROBADO",
         "checks_superados": len(checks),
         "comprobaciones": checks,
         "metricas_clave": {
@@ -166,11 +170,9 @@ def main() -> None:
         },
         "checkpoints": checkpoint_report,
         "documentos": {"informe_paginas": report_pages, "presentacion_paginas": presentation_pages},
-        "pendientes_manuales": ([] if registration_marker.exists() else [
-            "Ejecutar la celda de registro del formulario con conexión a internet.",
-            "Guardar el notebook después del envío y conservar la misma huella.",
-            "Durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda.",
-        ]),
+        "pendientes_manuales": [
+            "Laboratorio 7: durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda.",
+        ],
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(

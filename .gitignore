@@ -224,6 +224,9 @@ tmp/
 *.nav
 *.snm
 *.vrb
+*.fdb_latexmk
+*.fls
+*.xdv
 *.synctex.gz
 
 # La huella del formulario es un estado local; los pesos del torneo sí se conservan.

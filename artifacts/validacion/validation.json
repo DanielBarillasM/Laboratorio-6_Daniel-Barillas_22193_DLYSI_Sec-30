@@ -1,6 +1,6 @@
 {
-  "estado": "APROBADO_CON_ACCION_EXTERNA_PENDIENTE",
-  "checks_superados": 41,
+  "estado": "APROBADO",
+  "checks_superados": 43,
   "comprobaciones": [
     "El notebook conserva las 33 celdas oficiales.",
     "La verificación oficial del Bloque 2 está intacta.",
@@ -13,8 +13,10 @@
     "El entrenamiento conserva MAX_CIFRAS=4.",
     "La clave del torneo permanece en None.",
     "No hay salidas de error en el notebook.",
-    "Las 14 celdas académicas previas al registro tienen conteos consecutivos.",
-    "El formulario externo no fue enviado automáticamente.",
+    "Las 15 celdas hasta Entrega tienen conteos consecutivos.",
+    "La celda de Entrega fue ejecutada al final de la secuencia.",
+    "El notebook conserva la confirmación del formulario.",
+    "La salida de Entrega conserva la huella 94e198ec75ec.",
     "La celda del torneo no fue ejecutada antes de recibir la clave.",
     "La verificación de atención imprimió OK.",
     "La verificación del decoder imprimió OK.",
@@ -37,7 +39,7 @@
     "La huella de torneo coincide: 94e198ec75ec.",
     "El checkpoint torneo conserva 15 épocas.",
     "Las siete figuras exportadas existen y no están vacías.",
-    "El informe compilado tiene 15 páginas.",
+    "El informe compilado tiene 14 páginas.",
     "La presentación compilada tiene 10 páginas.",
     "Los ocho bloques tienen documentación separada.",
     "La presentación HTML contiene 15 diapositivas.",
@@ -68,12 +70,10 @@
     }
   },
   "documentos": {
-    "informe_paginas": 15,
+    "informe_paginas": 14,
     "presentacion_paginas": 10
   },
   "pendientes_manuales": [
-    "Ejecutar la celda de registro del formulario con conexión a internet.",
-    "Guardar el notebook después del envío y conservar la misma huella.",
-    "Durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda."
+    "Laboratorio 7: durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda."
   ]
 }

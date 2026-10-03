@@ -13,14 +13,14 @@
 - [x] Resultado y limitación experimental documentados.
 - [x] Cinco trampas válidas, distintas y fallidas.
 - [x] Reflexión final basada en un mapa de atención.
-- [x] Notebook ejecutado en orden y sin errores hasta la acción externa.
+- [x] Notebook ejecutado en orden y sin errores hasta la celda de Entrega.
 - [x] `modelos_lab6/` conservada; huella del torneo `94e198ec75ec`.
 - [x] `CLAVE = None` antes del torneo.
-- [ ] Registro del formulario ejecutado por el estudiante.
+- [x] Registro del formulario enviado; el notebook conserva el mensaje oficial `OK`.
+- [x] Huella posterior al registro verificada: `94e198ec75ec`.
 - [ ] Clave secreta ejecutada durante el torneo del Laboratorio 7.
 
 ## Estado
 
-La parte reproducible y evaluable del Laboratorio 6 está completa. Los dos elementos pendientes son
-acciones externas que deben ocurrir con participación del estudiante; no representan ausencia de código,
-modelo, resultados o documentación.
+El Laboratorio 6 está completo y listo para Canvas. El único paso futuro es la celda del torneo del
+Laboratorio 7, que debe conservar `CLAVE = None` hasta que el profesor revele la clave.

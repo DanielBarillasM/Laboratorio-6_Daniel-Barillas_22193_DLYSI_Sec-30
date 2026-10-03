@@ -35,7 +35,7 @@ La navegación también funciona con botones, índice lateral y gesto horizontal
 - Checkpoint del torneo: 186,767 parámetros y huella `94e198ec75ec`.
 - Siete figuras exportadas del notebook ejecutado.
 - Cinco predicciones incorrectas reales.
-- Estado transparente: el registro externo sigue pendiente y la clave del torneo permanece en `None`.
+- Estado transparente: el registro externo fue aceptado, la huella se conservó y el torneo sigue sin ejecutar con `CLAVE = None`.
 
 ## Archivos
 

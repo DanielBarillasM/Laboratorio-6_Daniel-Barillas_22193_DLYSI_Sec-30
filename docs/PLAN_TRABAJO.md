@@ -33,6 +33,8 @@ Construir, interpretar y validar una calculadora neuronal `seq2seq` que produzca
 
 La comparación principal modifica únicamente `invertir_salida`. Se considerará útil si mejora la exactitud de cuatro cifras y de acarreos en cadena sin superar el límite de parámetros. Las cifras cinco y seis se reportan como evaluación fuera de distribución y nunca se usan para entrenar.
 
-## Acción reservada al estudiante
+## Cierre de entrega y acción futura
 
-El envío al formulario del curso y la clave secreta del torneo son acciones académicas externas. El proyecto dejará ambas celdas listas, pero el estudiante conserva el control del envío.
+El registro del Laboratorio 6 fue enviado desde un kernel reiniciado y el notebook conserva la confirmación
+del formulario junto con la huella `94e198ec75ec`. La clave secreta continúa reservada para el Laboratorio 7:
+la última celda no se ejecutó y `CLAVE = None` permanece intacto hasta que el profesor revele la clave.

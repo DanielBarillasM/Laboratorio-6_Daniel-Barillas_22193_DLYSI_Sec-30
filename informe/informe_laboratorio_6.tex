@@ -90,9 +90,9 @@ número de parámetros, ejemplos o épocas. Sin embargo, el modelo obtuvo 0\% en
 en cinco casos válidos cuidadosamente buscados. La conclusión es doble: la inductiva escogida facilita el
 acarreo dentro de la distribución, pero no produce un algoritmo simbólico universal.
 
-\callout{Estado de entrega.}{El notebook está ejecutado, los tres pesos están preservados y la huella del
-modelo de torneo es \code{94e198ec75ec}. El envío al formulario del curso y la clave del torneo se
-mantienen como acciones externas del estudiante.}
+\callout{Estado de entrega.}{El notebook fue ejecutado desde un kernel reiniciado hasta la celda de
+Entrega. El formulario confirmó el registro y la huella del modelo de torneo se mantuvo en
+\code{94e198ec75ec}. La clave del torneo sigue en \code{None} porque corresponde al Laboratorio 7.}
 
 \section{Problema, objetivos y alcance}
 
@@ -130,7 +130,7 @@ Paso del decoder & Logits, estado y pesos verificados & Cumple \\
 Exactitud base $\geq 0.60$ & Exactitud 0.837 & Cumple \\
 Máximo 750,000 parámetros & 186,767 parámetros & Cumple \\
 Cinco trampas válidas & Cinco fallos reproducidos & Cumple \\
-Registro externo & Celda preparada; requiere estudiante & Pendiente manual \\
+Registro externo & Mensaje oficial de confirmación visible & Cumple \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -380,9 +380,10 @@ python scripts/exportar_figuras.py
 python scripts/verificar_entrega.py
 \end{verbatim}
 
-El notebook contiene 14 celdas de código ejecutadas con conteos consecutivos y sin errores. Las únicas dos
-celdas no ejecutadas son el registro externo y el torneo. Esto evita realizar una acción académica externa
-sin intervención del estudiante y mantiene \code{CLAVE=None} hasta que el profesor revele la clave.
+El notebook contiene 15 celdas de código ejecutadas con conteos consecutivos y sin errores hasta la
+entrega. La salida del formulario confirma el envío y repite la huella \code{94e198ec75ec}. La única celda
+sin ejecutar es la del torneo; \code{CLAVE=None} se mantiene hasta que el profesor revele la clave del
+Laboratorio 7.
 
 La metodología de producción y revisión de visualizaciones siguió principios de evidencia, legibilidad y
 reproducción asistida descritos por Kassis et al. \cite{kassis2026}; esa referencia documenta el proceso,
@@ -407,7 +408,6 @@ familias de acarreo y préstamo, evaluar exactitud por token además de cadena c
 que aumenten progresivamente la longitud. Cualquier cambio para el torneo deberá respetar la arquitectura,
 el máximo de cuatro cifras durante entrenamiento y la huella ya registrada.
 
-\section*{Referencias}
 \addcontentsline{toc}{section}{Referencias}
 \begin{thebibliography}{9}
 \bibitem{bahdanau2014}

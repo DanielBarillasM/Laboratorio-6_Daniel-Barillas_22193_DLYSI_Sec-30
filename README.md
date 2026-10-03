@@ -28,9 +28,9 @@ atención dinámica y una variante de torneo que invierte únicamente el orden d
 > **97.20 %** y la exactitud en operandos de cuatro cifras de **70.33 %** a **95.00 %**, sin aumentar
 > los **186,767 parámetros** del modelo.
 
-El notebook oficial está implementado y ejecutado hasta la celda anterior al formulario externo. El
-registro en Google Forms y la clave secreta del torneo permanecen bajo control del estudiante, como exige
-la guía.
+El notebook oficial está implementado y ejecutado en orden hasta la celda de **Entrega**. El formulario
+del curso confirmó `OK - registro enviado al formulario del curso` y la huella se mantuvo en
+`94e198ec75ec`. La sección del torneo no se ejecutó: `CLAVE = None` se conserva para el Laboratorio 7.
 
 ## Identificación
 
@@ -205,8 +205,8 @@ Edge o Firefox. No necesita servidor ni conexión a internet. Incluye:
 - estilos de impresión para exportarla a PDF desde el navegador;
 - las siete figuras reales del notebook, sin duplicar archivos ni fabricar resultados.
 
-La presentación mantiene visible que el registro del formulario externo sigue pendiente y que la clave
-del torneo permanece en `None`.
+La presentación refleja el estado final: el registro del formulario fue aceptado, la huella no cambió y
+la clave del torneo permanece en `None` porque corresponde al Laboratorio 7.
 
 ## Decisiones experimentales
 
@@ -230,10 +230,10 @@ del torneo permanece en `None`.
 - [x] Exactitud por cifras y mapas de atención interpretados.
 - [x] Hipótesis controlada y modelo del torneo bajo el límite de parámetros.
 - [x] Cinco problemas válidos que rompen la calculadora.
-- [x] Notebook ejecutado sin errores hasta la entrega externa.
+- [x] Notebook ejecutado sin errores hasta la celda de Entrega.
 - [x] Pesos y huellas preservados.
-- [ ] Envío del formulario del curso por el estudiante.
-- [ ] Ejecución de la clave secreta durante el torneo.
+- [x] Envío del formulario confirmado con el mensaje oficial y huella `94e198ec75ec`.
+- [ ] Ejecución de la clave secreta durante el torneo del Laboratorio 7.
 
 ## Documentos
 
