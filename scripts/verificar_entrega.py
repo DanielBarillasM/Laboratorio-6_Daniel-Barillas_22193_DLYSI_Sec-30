@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import nbformat
@@ -136,6 +137,22 @@ def main() -> None:
     task_docs = sorted((ROOT / "tareas").glob("task_*/README.md"))
     require(len(task_docs) == 8, "Los ocho bloques tienen documentación separada.", checks)
 
+    html_presentation = ROOT / "presentacion_html" / "index.html"
+    html_source = html_presentation.read_text(encoding="utf-8")
+    html_slides = re.findall(r'<section\s+class="slide(?:\s|\")', html_source)
+    require(len(html_slides) == 15,
+            "La presentación HTML contiene 15 diapositivas.", checks)
+    html_assets = [
+        ROOT / "presentacion_html" / "assets" / "styles.css",
+        ROOT / "presentacion_html" / "assets" / "app.js",
+        ROOT / "presentacion_html" / "assets" / "favicon.svg",
+    ]
+    require(all(path.exists() and path.stat().st_size > 0 for path in html_assets),
+            "Los estilos, controles y favicon de la presentación HTML existen.", checks)
+    require(all(path.relative_to(ROOT).as_posix() in (ROOT / "README.md").read_text(encoding="utf-8")
+                for path in [html_presentation]),
+            "El README enlaza la presentación HTML interactiva.", checks)
+
     registration_marker = ROOT / "modelos_lab6" / "registro_enviado.txt"
     result = {
         "estado": "APROBADO_CON_ACCION_EXTERNA_PENDIENTE" if not registration_marker.exists() else "APROBADO",
@@ -156,7 +173,11 @@ def main() -> None:
         ]),
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    OUTPUT.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

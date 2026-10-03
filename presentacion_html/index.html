@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Presentación interactiva del Laboratorio 6: calculadora neuronal seq2seq con atención de Bahdanau.">
+  <meta name="theme-color" content="#1e1e1e">
+  <title>Calculadora Neuronal · Laboratorio 6</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#slide-01">Saltar a la presentación</a>
+
+  <header class="deck-bar" aria-label="Controles de la presentación">
+    <a class="deck-brand" href="#slide-01" aria-label="Ir a la portada">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span><strong>Calculadora Neuronal</strong><small>Laboratorio 6 · 22193</small></span>
+    </a>
+    <div class="deck-actions">
+      <span class="truth-badge" title="El formulario externo todavía no se ha enviado"><span aria-hidden="true"></span> Registro pendiente</span>
+      <button class="text-button" id="toc-button" type="button" aria-haspopup="dialog" aria-controls="toc-dialog">Índice</button>
+      <button class="text-button" id="notes-button" type="button" aria-pressed="false">Guion</button>
+      <button class="icon-button" id="fullscreen-button" type="button" aria-label="Activar pantalla completa" title="Pantalla completa (F)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="progress-rail" aria-label="Progreso de la presentación">
+    <div class="rail-track"><span id="rail-progress"></span></div>
+    <ol id="rail-list"></ol>
+  </nav>
+
+  <main class="deck" id="deck">
+    <section class="slide slide-cover" id="slide-01" data-title="Portada" aria-labelledby="title-01">
+      <div class="cover-grid">
+        <div class="cover-copy">
+          <p class="context-line">Deep Learning 2026 / Sección 30 / Laboratorio individual</p>
+          <h1 id="title-01">Una red que escribe resultados, no reglas.</h1>
+          <p class="cover-lead">Proceso completo de una calculadora neuronal <em>seq2seq</em>: desde la atención aditiva hasta los casos que demuestran dónde deja de generalizar.</p>
+          <div class="identity-block"><span>Pablo Daniel Barillas Moreno</span><span>Carné 22193</span></div>
+        </div>
+        <div class="carry-stage" aria-label="Visualización del acarreo en 9999 más 1">
+          <div class="carry-label">La dificultad central</div>
+          <div class="carry-row carry-flags" aria-hidden="true"><span>1</span><span>1</span><span>1</span><span>1</span><span>1</span></div>
+          <div class="carry-row carry-number"><span></span><b>9</b><b>9</b><b>9</b><b>9</b></div>
+          <div class="carry-row carry-number carry-add"><span>+</span><b></b><b></b><b></b><b>1</b></div>
+          <div class="carry-rule"></div>
+          <div class="carry-row carry-answer"><b>1</b><b>0</b><b>0</b><b>0</b><b>0</b></div>
+          <p>El estado recurrente debe conservar una dependencia que atraviesa todas las columnas.</p>
+        </div>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La tarea no entrega reglas aritméticas al modelo. Solo muestra expresiones y respuestas. Esta presentación sigue la evidencia desde la hipótesis hasta los fallos reales.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-02" data-title="Reto y criterios" aria-labelledby="title-02">
+      <div class="slide-heading"><span class="section-index">01</span><div><h2 id="title-02">El reto estaba delimitado con precisión</h2><p>Una secuencia entra; otra secuencia debe salir carácter por carácter.</p></div></div>
+      <div class="brief-layout">
+        <div class="expression-demo" aria-label="Ejemplo de entrada y salida"><span class="expression-input">4821+3976</span><span class="flow-arrow" aria-hidden="true">→</span><span class="expression-output">8797</span><small>Sin usar Python para calcular el resultado</small></div>
+        <div class="constraint-list">
+          <div><span>Datos</span><strong>1–4 cifras</strong><p>Sumas y restas no negativas generadas al azar.</p></div>
+          <div><span>Modelo</span><strong>≤ 750,000</strong><p>Reconstruible mediante <code>Calculadora</code> y <code>CONFIG</code>.</p></div>
+          <div><span>Implementación</span><strong>PyTorch</strong><p>Sin NumPy ni <code>nn.MultiheadAttention</code>.</p></div>
+          <div><span>Entrega</span><strong>Notebook ejecutado</strong><p>Verificaciones intactas y salidas visibles.</p></div>
+        </div>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>Estos límites impiden atajos: el resultado debe provenir de la red, la atención debe implementarse manualmente y ningún ejemplo de entrenamiento puede exceder cuatro cifras.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-03" data-title="Fundamento" aria-labelledby="title-03">
+      <div class="slide-heading"><span class="section-index">02</span><div><h2 id="title-03">La hipótesis nació antes del entrenamiento</h2><p>Dos lecturas orientaron la arquitectura y una decisión experimental.</p></div></div>
+      <div class="theory-split">
+        <article class="paper-note"><span class="citation-key">Bahdanau · §3.1</span><h3>Un solo vector es un cuello de botella</h3><p>El contexto dinámico permite que cada paso del decoder consulte una combinación distinta de los estados del encoder.</p><div class="equation" aria-label="Ecuaciones de atención aditiva"><span>e<sub>j</sub> = v<sup>T</sup> tanh(W<sub>q</sub>s + W<sub>k</sub>h<sub>j</sub>)</span><span>α = softmax(e)</span><span>c = Σ α<sub>j</sub>h<sub>j</sub></span></div></article>
+        <article class="paper-note paper-note-dark"><span class="citation-key">Sutskever · §3.3</span><h3>El orden cambia la distancia de las dependencias</h3><p>La aritmética manual comienza por las unidades. Por eso se planteó invertir la salida y dejar intacta la entrada.</p><blockquote>Si el decoder escribe unidades primero, puede transportar el acarreo en su estado recurrente.</blockquote></article>
+      </div>
+      <p class="source-line">Fuentes académicas: Bahdanau, Cho y Bengio (2014); Sutskever, Vinyals y Le (2014).</p>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La tercera respuesta de investigación no describe el resultado después de verlo: registra la predicción previa. Esto hace que el Bloque 6 sea una prueba y no una explicación retrospectiva.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-04" data-title="Datos sintéticos" aria-labelledby="title-04">
+      <div class="slide-heading"><span class="section-index">03</span><div><h2 id="title-04">40,000 ejemplos no permiten memorizar el espacio</h2><p>El generador crea problemas nuevos sin depender de un archivo de datos.</p></div></div>
+      <div class="data-layout">
+        <div class="space-math">
+          <div class="math-step"><span>Sumas</span><strong>9,000²</strong><em>81,000,000</em></div><div class="math-symbol">+</div>
+          <div class="math-step"><span>Restas a ≥ b</span><strong>9,000 × 9,001 / 2</strong><em>40,504,500</em></div>
+          <div class="math-total"><span>Problemas de cuatro cifras</span><strong>121,504,500</strong></div><p>La muestra de entrenamiento cubre menos de <strong>0.033%</strong> de este subconjunto.</p>
+        </div>
+        <figure class="figure-panel"><img src="../artifacts/figuras/01_distribucion_longitudes.png" alt="Histograma de longitudes de problemas generados"><figcaption>Distribución reproducible de longitudes en validación.</figcaption></figure>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El conteo usa operandos de exactamente cuatro cifras. La diferencia frente a 40,000 ejemplos obliga al modelo a aprender regularidades posicionales, aunque no garantiza que descubra un algoritmo.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-05" data-title="Arquitectura" aria-labelledby="title-05">
+      <div class="slide-heading"><span class="section-index">04</span><div><h2 id="title-05">Un flujo recurrente con una consulta distinta por dígito</h2><p>La arquitectura conserva el machote y completa únicamente los bloques solicitados.</p></div></div>
+      <div class="pipeline" role="img" aria-label="Flujo de la arquitectura seq2seq">
+        <div class="pipeline-node"><span>Entrada</span><strong>4821+3976</strong><small>15 tokens posibles</small></div><div class="pipeline-link"><span>embedding</span></div>
+        <div class="pipeline-node"><span>Encoder</span><strong>GRU bidireccional</strong><small>un h<sub>j</sub> por carácter</small></div><div class="pipeline-link pipeline-link-cyan"><span>h₁ … hₜ</span></div>
+        <div class="pipeline-node pipeline-focus"><span>Consulta</span><strong>Atención aditiva</strong><small>contexto c para este paso</small></div><div class="pipeline-link"><span>[emb, c]</span></div>
+        <div class="pipeline-node"><span>Decoder</span><strong>GRUCell</strong><small>token siguiente + estado</small></div>
+      </div>
+      <div class="architecture-facts"><span><strong>32</strong> dimensión del embedding</span><span><strong>64</strong> dimensión oculta base</span><span><strong>186,767</strong> parámetros totales</span><span><strong>CPU</strong> dispositivo oficial</span></div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El encoder usa secuencias empaquetadas para no aprender del padding. La salida bidireccional alimenta la atención; el decoder actualiza su estado con embedding y contexto.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-06" data-title="Implementación" aria-labelledby="title-06">
+      <div class="slide-heading"><span class="section-index">05</span><div><h2 id="title-06">Los dos bloques programados pasaron sus pruebas oficiales</h2><p>Las celdas de verificación permanecen idénticas al machote.</p></div></div>
+      <div class="code-compare">
+        <article><header><span>Bloque 2</span><strong>Atención aditiva</strong></header><pre><code>puntajes = v(tanh(
+  W_q(estado).unsqueeze(1)
+  + W_k(salidas_enc)
+)).squeeze(-1)
+
+puntajes = puntajes.masked_fill(
+  mascara_pad, float("-inf")
+)
+pesos = softmax(puntajes, dim=-1)
+contexto = bmm(pesos.unsqueeze(1), salidas_enc)</code></pre><footer><span class="ok-mark">OK</span> pesos suman 1 y padding recibe 0</footer></article>
+        <article><header><span>Bloque 3</span><strong>Paso del decoder</strong></header><pre><code>emb = embedding(token_previo)
+contexto, pesos = atencion(
+  estado, salidas_enc, mascara_pad
+)
+nuevo_estado = gru(
+  cat([emb, contexto]), estado
+)
+logits = salida(
+  cat([nuevo_estado, contexto])
+)</code></pre><footer><span class="ok-mark">OK</span> formas y máscara verificadas</footer></article>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La verificación del docente comprobó las formas de contexto, pesos, logits y estado. También comprobó que los pesos del padding fueran exactamente cero.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-07" data-title="Diseño experimental" aria-labelledby="title-07">
+      <div class="slide-heading"><span class="section-index">06</span><div><h2 id="title-07">La comparación cambió una variable a la vez</h2><p>Mismos datos, capacidad, semilla y optimización para atribuir las diferencias.</p></div></div>
+      <div class="experiment-matrix" role="table" aria-label="Configuraciones experimentales">
+        <div class="matrix-row matrix-head" role="row"><span role="columnheader">Configuración</span><span role="columnheader">Atención</span><span role="columnheader">Salida invertida</span><span role="columnheader">Ejemplos</span><span role="columnheader">Épocas</span></div>
+        <div class="matrix-row" role="row"><strong>Baseline con atención</strong><span>Sí</span><span>No</span><span>40,000</span><span>15</span></div>
+        <div class="matrix-row" role="row"><strong>Baseline sin atención</strong><span>No</span><span>No</span><span>40,000</span><span>15</span></div>
+        <div class="matrix-row matrix-highlight" role="row"><strong>Modelo de torneo</strong><span>Sí</span><span>Sí</span><span>40,000</span><span>15</span></div>
+      </div>
+      <div class="config-strip"><span>semilla <strong>2026</strong></span><span>lote <strong>128</strong></span><span>lr <strong>3×10<sup>−3</sup></strong></span><span>validación <strong>2,000</strong></span><span>por longitud <strong>300</strong></span></div>
+      <p class="limitation-line"><strong>Límite conocido:</strong> una sola semilla no estima la variabilidad entre entrenamientos.</p>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El baseline con y sin atención permite medir el aporte del contexto dinámico. El torneo conserva atención y cambia únicamente el orden de salida.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-08" data-title="Baselines" aria-labelledby="title-08">
+      <div class="slide-heading"><span class="section-index">07</span><div><h2 id="title-08">La atención ganó cuando la secuencia se volvió exigente</h2><p>La exactitud exige que toda la respuesta coincida; un dígito incorrecto invalida el ejemplo.</p></div></div>
+      <div class="results-layout">
+        <figure class="figure-panel figure-wide"><img src="../artifacts/figuras/02_curvas_entrenamiento.png" alt="Curvas de pérdida y exactitud de los modelos con y sin atención"><figcaption>Quince épocas; la pérdida por token y la exactitud exacta no tienen por qué ser monótonas.</figcaption></figure>
+        <div class="score-columns"><div><span>Con atención</span><strong>83.70%</strong><em>validación completa</em></div><div><span>Sin atención</span><strong>67.25%</strong><em>validación completa</em></div><p><strong>+16.45 pp</strong> a favor del contexto dinámico.</p></div>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La atención no domina necesariamente en problemas triviales. La ventaja global aparece porque ayuda a conservar información cuando aumenta la longitud.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-09" data-title="Exactitud por cifras" aria-labelledby="title-09">
+      <div class="slide-heading"><span class="section-index">08</span><div><h2 id="title-09">El beneficio se concentra dentro del rango aprendido</h2><p>Cinco y seis cifras se evalúan, pero nunca se usan para entrenar.</p></div></div>
+      <div class="chart-table-layout">
+        <figure class="figure-panel"><img src="../artifacts/figuras/03_exactitud_por_cifras_baselines.png" alt="Barras de exactitud por cifras de los modelos con y sin atención"><figcaption>Comparación de los dos baselines.</figcaption></figure>
+        <table class="data-table"><thead><tr><th>Cifras</th><th>Atención</th><th>Sin atención</th><th>Diferencia</th></tr></thead><tbody>
+          <tr><td>1</td><td>100.00%</td><td>100.00%</td><td>0.00 pp</td></tr><tr><td>2</td><td>94.00%</td><td>96.67%</td><td>−2.67 pp</td></tr><tr><td>3</td><td>86.67%</td><td>74.33%</td><td>+12.34 pp</td></tr><tr class="accent-row"><td>4</td><td>70.33%</td><td>50.00%</td><td>+20.33 pp</td></tr><tr class="ood-row"><td>5</td><td>3.67%</td><td>0.00%</td><td>fuera de rango</td></tr><tr class="ood-row"><td>6</td><td>0.00%</td><td>0.00%</td><td>fuera de rango</td></tr>
+        </tbody></table>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>Con uno o dos dígitos, un resumen fijo puede ser suficiente. En cuatro cifras la ventaja de atención es 20.33 puntos. La caída fuera de rango demuestra que atención no equivale a extrapolación.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-10" data-title="Modelo de torneo" aria-labelledby="title-10">
+      <div class="slide-heading"><span class="section-index">09</span><div><h2 id="title-10">Invertir la salida produjo la mejora decisiva</h2><p>La red genera internamente unidades primero y revierte el texto al presentar la respuesta.</p></div></div>
+      <div class="tournament-layout">
+        <div class="metric-ledger"><div><span>Validación</span><b>83.70%</b><i>→</i><strong>97.20%</strong><em>+13.50 pp</em></div><div><span>Cuatro cifras</span><b>70.33%</b><i>→</i><strong>95.00%</strong><em>+24.67 pp</em></div><div><span>Parámetros</span><b>186,767</b><i>→</i><strong>186,767</strong><em>sin aumento</em></div></div>
+        <figure class="figure-panel"><img src="../artifacts/figuras/05_exactitud_base_vs_torneo.png" alt="Comparación por cifras entre baseline con atención y modelo de torneo"><figcaption>La hipótesis se cumple dentro de la distribución.</figcaption></figure>
+      </div>
+      <div class="fingerprint-line"><span>Checkpoint final</span><code>torneo_22193.pt</code><span>Huella</span><code>94e198ec75ec</code></div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La mejora no se obtuvo con más parámetros ni más ejemplos. El resultado es compatible con una mejor alineación temporal del acarreo, aunque una sola corrida no permite estimar intervalos.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-11" data-title="Mapas de atención" aria-labelledby="title-11">
+      <div class="slide-heading"><span class="section-index">10</span><div><h2 id="title-11">La atención muestra alineaciones, no una prueba de razonamiento</h2><p>Cada fila es un token generado; cada columna, un carácter de entrada.</p></div></div>
+      <div class="attention-gallery">
+        <figure class="figure-panel"><img src="../artifacts/mapas_atencion/04_atencion_baseline.png" alt="Mapas de atención del modelo baseline"><figcaption><strong>Baseline:</strong> debe producir primero el dígito más significativo.</figcaption></figure>
+        <figure class="figure-panel"><img src="../artifacts/mapas_atencion/06_atencion_torneo.png" alt="Mapas de atención del modelo de torneo con salida invertida"><figcaption><strong>Torneo:</strong> genera primero las unidades y avanza hacia la izquierda.</figcaption></figure>
+      </div>
+      <p class="interpretation-note">Los pesos cambian por paso y revelan selección posicional. No demuestran por sí solos que cada celda implemente una operación simbólica.</p>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La visualización permite auditar dónde mira el modelo. Atención es una distribución interna útil, no una explicación causal completa.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-12" data-title="Casos adversariales" aria-labelledby="title-12">
+      <div class="slide-heading"><span class="section-index">11</span><div><h2 id="title-12">Cinco contraejemplos refutan una regla universal</h2><p>Todos respetan el máximo de cuatro cifras y fueron evaluados por el checkpoint final.</p></div></div>
+      <div class="adversarial-layout">
+        <table class="data-table trap-table"><thead><tr><th>Problema</th><th>Predicción</th><th>Correcta</th><th>Debilidad</th></tr></thead><tbody>
+          <tr><td><code>9999+1</code></td><td><code>0000</code></td><td><code>10000</code></td><td>Nueva cifra y acarreo global</td></tr><tr><td><code>9998+2</code></td><td><code>0000</code></td><td><code>10000</code></td><td>Acarreo desde unidades</td></tr><tr><td><code>9999+9999</code></td><td><code>18998</code></td><td><code>19998</code></td><td>Acarreos simultáneos</td></tr><tr><td><code>1000-999</code></td><td><code>11</code></td><td><code>1</code></td><td>Préstamo y salida corta</td></tr><tr><td><code>4000-3999</code></td><td><code>001</code></td><td><code>1</code></td><td>Préstamos y ceros iniciales</td></tr>
+        </tbody></table>
+        <figure class="figure-panel"><img src="../artifacts/mapas_atencion/07_trampa_vs_control.png" alt="Mapa de atención de 9999 más 1 frente a un caso de control"><figcaption><code>9999+1</code> frente a <code>4821+3976</code>.</figcaption></figure>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El modelo acierta 97.2% de validación, pero produce 0000 ante 9999+1. Aprendió una aproximación estadística potente, no un algoritmo garantizado para toda entrada válida.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-13" data-title="Reproducibilidad" aria-labelledby="title-13">
+      <div class="slide-heading"><span class="section-index">12</span><div><h2 id="title-13">Cada conclusión puede rastrearse hasta un artefacto</h2><p>El repositorio separa machote, ejecución, pesos, evidencia y documentación.</p></div></div>
+      <div class="repo-map">
+        <div class="repo-tree" aria-label="Árbol de carpetas del repositorio"><span class="folder">notebooks/</span><small>machote intacto + versión final</small><span class="folder">modelos_lab6/</span><small>tres checkpoints congelados</small><span class="folder">tareas/</span><small>documentación de bloques 0–7</small><span class="folder">artifacts/</span><small>métricas, figuras y validación</small><span class="folder">informe/</span><small>LaTeX + PDF de 15 páginas</small><span class="folder active-folder">presentacion_html/</span><small>esta presentación autónoma</small></div>
+        <div class="trace-flow"><div><b>01</b><span>Construir desde el machote</span></div><div><b>02</b><span>Entrenar y congelar pesos</span></div><div><b>03</b><span>Medir y localizar fallos</span></div><div><b>04</b><span>Integrar outputs al notebook</span></div><div><b>05</b><span>Validar 41 condiciones</span></div></div>
+      </div>
+      <div class="checkpoint-strip"><span>base atención <code>7dd56f9acf5d</code></span><span>sin atención <code>11a6346d696d</code></span><span>torneo <code>94e198ec75ec</code></span></div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El notebook oficial en la raíz conserva el nombre solicitado. Los pesos permiten cargar los modelos sin reentrenar y las huellas detectan cualquier cambio.</p></aside>
+    </section>
+
+    <section class="slide" id="slide-14" data-title="Cumplimiento" aria-labelledby="title-14">
+      <div class="slide-heading"><span class="section-index">13</span><div><h2 id="title-14">La parte técnica está completa; una acción externa sigue pendiente</h2><p>Estado exacto del repositorio, sin presentar como realizado lo que aún no ocurrió.</p></div></div>
+      <div class="compliance-layout">
+        <div class="check-cluster"><div><span>✓</span><p><strong>33 celdas preservadas</strong>Dos verificaciones oficiales intactas.</p></div><div><span>✓</span><p><strong>14 celdas ejecutadas</strong>Conteos consecutivos y cero errores.</p></div><div><span>✓</span><p><strong>41 controles superados</strong>Modelos, figuras, límites y documentos.</p></div><div><span>✓</span><p><strong>5 de 5 trampas fallan</strong>Evidencia adversarial real.</p></div></div>
+        <div class="pending-panel"><span class="pending-icon" aria-hidden="true">!</span><h3>Registro del curso</h3><p>La celda está preparada, pero aún no se ha enviado el formulario. Requiere conexión a internet y participación del estudiante.</p><ol><li>Ejecutar hasta la sección Entrega.</li><li>Confirmar “registro enviado”.</li><li>Guardar el notebook con la salida visible.</li></ol><p class="do-not-run">La clave del torneo permanece correctamente en <code>None</code>.</p></div>
+      </div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>El laboratorio contiene el código y la evidencia, pero la rúbrica exige confirmar el envío externo. La presentación no afirma que ya ocurrió.</p></aside>
+    </section>
+
+    <section class="slide slide-closing" id="slide-15" data-title="Conclusiones" aria-labelledby="title-15">
+      <div class="closing-copy"><p class="context-line">Conclusión basada en evidencia</p><h2 id="title-15">Aprender a acertar no es lo mismo que aprender el algoritmo.</h2><div class="closing-points"><p><strong>Atención</strong><span>Ayudó especialmente cuando aumentó la longitud dentro de distribución.</span></p><p><strong>Orden</strong><span>Invertir la salida alineó la generación con el acarreo y elevó cuatro cifras a 95%.</span></p><p><strong>Límite</strong><span>La extrapolación a cinco y seis cifras fue 0%, y cinco entradas válidas rompieron el modelo.</span></p></div><a class="repo-link" href="https://github.com/DanielBarillasM/Laboratorio-6_Daniel-Barillas_22193_DLYSI_Sec-30" target="_blank" rel="noreferrer">Abrir el repositorio en GitHub</a></div>
+      <div class="closing-score" aria-label="Resultado final del modelo de torneo"><span>Modelo de torneo</span><strong>97.20%</strong><small>exactitud de validación</small><code>94e198ec75ec</code></div>
+      <aside class="speaker-notes"><strong>Guion</strong><p>La mejora es real y reproducible, pero su interpretación debe respetar los límites observados. El valor del laboratorio está tanto en el 97.2% como en saber explicar el 2.8% restante.</p></aside>
+    </section>
+  </main>
+
+  <footer class="deck-controls" aria-label="Navegación entre diapositivas">
+    <button class="nav-button" id="previous-button" type="button" aria-label="Diapositiva anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <div class="counter"><span id="current-slide">01</span><span>/</span><span id="total-slides">15</span></div>
+    <button class="nav-button" id="next-button" type="button" aria-label="Diapositiva siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </footer>
+
+  <dialog class="toc-dialog" id="toc-dialog" aria-labelledby="toc-title">
+    <div class="dialog-heading"><div><span>Vista general</span><h2 id="toc-title">Recorrido del laboratorio</h2></div><button class="icon-button" id="toc-close" type="button" aria-label="Cerrar índice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <ol id="toc-list"></ol><p class="keyboard-help"><kbd>←</kbd><kbd>→</kbd> navegar · <kbd>F</kbd> pantalla completa · <kbd>G</kbd> guion · <kbd>O</kbd> índice</p>
+  </dialog>
+
+  <noscript><p class="noscript-message">JavaScript está desactivado. Todas las secciones permanecen visibles en modo documento.</p></noscript>
+</body>
+</html>

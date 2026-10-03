@@ -1,6 +1,6 @@
 {
   "estado": "APROBADO_CON_ACCION_EXTERNA_PENDIENTE",
-  "checks_superados": 38,
+  "checks_superados": 41,
   "comprobaciones": [
     "El notebook conserva las 33 celdas oficiales.",
     "La verificación oficial del Bloque 2 está intacta.",
@@ -39,7 +39,10 @@
     "Las siete figuras exportadas existen y no están vacías.",
     "El informe compilado tiene 15 páginas.",
     "La presentación compilada tiene 10 páginas.",
-    "Los ocho bloques tienen documentación separada."
+    "Los ocho bloques tienen documentación separada.",
+    "La presentación HTML contiene 15 diapositivas.",
+    "Los estilos, controles y favicon de la presentación HTML existen.",
+    "El README enlaza la presentación HTML interactiva."
   ],
   "metricas_clave": {
     "validacion_atencion": 0.837,

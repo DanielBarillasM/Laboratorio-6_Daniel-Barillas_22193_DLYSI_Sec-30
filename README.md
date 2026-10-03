@@ -138,6 +138,9 @@ Los `<PAD>` se enmascaran con `-∞` antes del `softmax`, por lo que reciben pes
 │   └── validacion/
 ├── informe/
 ├── presentacion_repositorio/
+├── presentacion_html/
+│   ├── index.html
+│   └── assets/
 ├── scripts/
 └── docs/
 ```
@@ -179,6 +182,32 @@ python scripts/verificar_entrega.py
 `build_notebook.py` parte siempre del machote preservado, comprueba que las verificaciones oficiales de
 los bloques 2 y 3 no cambien y rellena las conclusiones con `artifacts/metricas/resultados.json`.
 
+## Presentación HTML interactiva
+
+La carpeta [`presentacion_html/`](presentacion_html/) contiene una presentación autónoma de 15 secciones
+que recorre el reto, la investigación, la arquitectura, la implementación, el diseño experimental, los
+resultados, los mapas de atención, los casos adversariales y el estado real de cumplimiento.
+
+Para abrirla, ejecute desde la raíz del repositorio:
+
+```powershell
+Start-Process .\presentacion_html\index.html
+```
+
+También puede abrir [`presentacion_html/index.html`](presentacion_html/index.html) directamente en Chrome,
+Edge o Firefox. No necesita servidor ni conexión a internet. Incluye:
+
+- navegación por botones, índice lateral, teclado y gestos táctiles;
+- modo de pantalla completa con la tecla `F`;
+- guion de exposición con la tecla `G`;
+- vista general con la tecla `O`;
+- adaptación para teléfonos y pantallas pequeñas;
+- estilos de impresión para exportarla a PDF desde el navegador;
+- las siete figuras reales del notebook, sin duplicar archivos ni fabricar resultados.
+
+La presentación mantiene visible que el registro del formulario externo sigue pendiente y que la clave
+del torneo permanece en `None`.
+
 ## Decisiones experimentales
 
 - Semilla fija: `2026`.
@@ -212,6 +241,8 @@ los bloques 2 y 3 no cambien y rellena las conclusiones con `artifacts/metricas/
 - [Fuente LaTeX del informe](informe/informe_laboratorio_6.tex)
 - [Presentación del repositorio en PDF](presentacion_repositorio/presentacion_repositorio.pdf)
 - [Fuente LaTeX de la presentación](presentacion_repositorio/presentacion_repositorio.tex)
+- [Presentación HTML interactiva](presentacion_html/index.html)
+- [Guía de uso de la presentación HTML](presentacion_html/README.md)
 - [Checklist de rúbrica](docs/CHECKLIST_RUBRICA.md)
 - [Plan de trabajo](docs/PLAN_TRABAJO.md)
 - [Referencias](docs/REFERENCIAS.md)
