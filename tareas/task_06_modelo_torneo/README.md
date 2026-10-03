@@ -1,3 +1,17 @@
-# Task 06 - Modelo del torneo
+# Task 06 · Modelo del torneo
 
-Prueba la hipótesis de invertir la salida para alinear el orden de generación con el acarreo de derecha a izquierda. La configuración final debe mantenerse por debajo de 750,000 parámetros.
+## Hipótesis
+
+Invertir únicamente la salida facilitará el acarreo porque el decoder producirá unidades primero y podrá
+propagar información hacia la izquierda en su estado recurrente.
+
+## Resultado
+
+| Métrica | Baseline | Torneo | Cambio |
+|---|---:|---:|---:|
+| Validación | 83.70 % | **97.20 %** | +13.50 pp |
+| Cuatro cifras | 70.33 % | **95.00 %** | +24.67 pp |
+| Parámetros | 186,767 | 186,767 | 0 |
+
+La hipótesis se cumple. La limitación principal es el uso de una sola semilla y una muestra de 300
+problemas por longitud. Huella congelada del modelo: `94e198ec75ec`.
