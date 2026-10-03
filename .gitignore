@@ -214,5 +214,19 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# Artefactos temporales del Laboratorio 6
+tmp/
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+
+# La huella del formulario es un estado local; los pesos del torneo sí se conservan.
+modelos_lab6/registro_enviado.txt
+
 # Streamlit
 .streamlit/secrets.toml
