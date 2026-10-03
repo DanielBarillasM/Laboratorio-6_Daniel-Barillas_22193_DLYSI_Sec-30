@@ -216,6 +216,7 @@ __marimo__/
 
 # Artefactos temporales del Laboratorio 6
 tmp/
+.tmp/
 *.aux
 *.log
 *.out

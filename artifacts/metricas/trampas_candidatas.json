@@ -1,0 +1,32 @@
+[
+  {
+    "problema": "9999+1",
+    "prediccion": "0000",
+    "correcta": "10000",
+    "razon": "acarreo que atraviesa todas las columnas"
+  },
+  {
+    "problema": "9998+2",
+    "prediccion": "0000",
+    "correcta": "10000",
+    "razon": "acarreo encadenado desde las unidades"
+  },
+  {
+    "problema": "9999+9999",
+    "prediccion": "18998",
+    "correcta": "19998",
+    "razon": "acarreos en las cuatro posiciones"
+  },
+  {
+    "problema": "1000-999",
+    "prediccion": "11",
+    "correcta": "1",
+    "razon": "préstamo encadenado con resultado pequeño"
+  },
+  {
+    "problema": "4000-3999",
+    "prediccion": "001",
+    "correcta": "1",
+    "razon": "préstamos a través de ceros internos"
+  }
+]
