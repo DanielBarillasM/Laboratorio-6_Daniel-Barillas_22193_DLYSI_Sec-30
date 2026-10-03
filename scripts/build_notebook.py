@@ -11,6 +11,7 @@ import nbformat
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "notebooks" / "00_machote_original.ipynb"
 TARGET = ROOT / "notebooks" / "01_calculadora_neuronal_final.ipynb"
+OFFICIAL = ROOT / "S13_Lab06_Calculadora_Neuronal_ESTUDIANTE.ipynb"
 METRICS = ROOT / "artifacts" / "metricas" / "resultados.json"
 TRAPS = ROOT / "artifacts" / "metricas" / "trampas_candidatas.json"
 
@@ -270,7 +271,9 @@ mapa_atencion(modelo_torneo, ["4821+3976", "9999+1", "7305-2618"])'''
     assert source(notebook.cells[10]) == original_checks[10], "La verificación del Bloque 2 cambió."
     assert source(notebook.cells[14]) == original_checks[14], "La verificación del Bloque 3 cambió."
     nbformat.write(notebook, TARGET)
+    nbformat.write(notebook, OFFICIAL)
     print(f"Notebook construido: {TARGET}")
+    print(f"Copia con nombre oficial: {OFFICIAL}")
 
 
 if __name__ == "__main__":

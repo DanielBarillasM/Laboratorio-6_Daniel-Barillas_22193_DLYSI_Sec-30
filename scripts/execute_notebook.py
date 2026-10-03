@@ -12,6 +12,7 @@ from nbclient import NotebookClient
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK = ROOT / "notebooks" / "01_calculadora_neuronal_final.ipynb"
+OFFICIAL = ROOT / "S13_Lab06_Calculadora_Neuronal_ESTUDIANTE.ipynb"
 METRICS_DIR = ROOT / "artifacts" / "metricas"
 TEMP_DIR = ROOT / ".tmp"
 
@@ -128,6 +129,7 @@ def execute(stage: str) -> None:
                 notebook.cells[index].execution_count = working.cells[index].execution_count
                 notebook.cells[index].outputs = working.cells[index].outputs
         nbformat.write(notebook, NOTEBOOK)
+        nbformat.write(notebook, OFFICIAL)
         print(f"Salidas integradas en {NOTEBOOK}")
     print(f"Ejecución guardada en {path}")
 

@@ -1,0 +1,76 @@
+{
+  "estado": "APROBADO_CON_ACCION_EXTERNA_PENDIENTE",
+  "checks_superados": 38,
+  "comprobaciones": [
+    "El notebook conserva las 33 celdas oficiales.",
+    "La verificación oficial del Bloque 2 está intacta.",
+    "La verificación oficial del Bloque 3 está intacta.",
+    "La copia con nombre oficial es idéntica al notebook final.",
+    "El código del notebook no importa NumPy.",
+    "El código no utiliza nn.MultiheadAttention.",
+    "No quedan TODO en celdas de código.",
+    "Nombre y carné están completos.",
+    "El entrenamiento conserva MAX_CIFRAS=4.",
+    "La clave del torneo permanece en None.",
+    "No hay salidas de error en el notebook.",
+    "Las 14 celdas académicas previas al registro tienen conteos consecutivos.",
+    "El formulario externo no fue enviado automáticamente.",
+    "La celda del torneo no fue ejecutada antes de recibir la clave.",
+    "La verificación de atención imprimió OK.",
+    "La verificación del decoder imprimió OK.",
+    "Los cinco contraejemplos rompen el modelo final.",
+    "La exactitud base con atención supera 0.60.",
+    "La exactitud congelada del torneo es 0.972.",
+    "La exactitud del torneo en cuatro cifras es 0.95.",
+    "Hay cinco trampas distintas documentadas.",
+    "Las cinco trampas contienen predicciones incorrectas reales.",
+    "El checkpoint base_con_atencion conserva 186767 parámetros.",
+    "El checkpoint base_con_atencion respeta el límite de parámetros.",
+    "La huella de base_con_atencion coincide: 7dd56f9acf5d.",
+    "El checkpoint base_con_atencion conserva 15 épocas.",
+    "El checkpoint base_sin_atencion conserva 186767 parámetros.",
+    "El checkpoint base_sin_atencion respeta el límite de parámetros.",
+    "La huella de base_sin_atencion coincide: 11a6346d696d.",
+    "El checkpoint base_sin_atencion conserva 15 épocas.",
+    "El checkpoint torneo conserva 186767 parámetros.",
+    "El checkpoint torneo respeta el límite de parámetros.",
+    "La huella de torneo coincide: 94e198ec75ec.",
+    "El checkpoint torneo conserva 15 épocas.",
+    "Las siete figuras exportadas existen y no están vacías.",
+    "El informe compilado tiene 15 páginas.",
+    "La presentación compilada tiene 10 páginas.",
+    "Los ocho bloques tienen documentación separada."
+  ],
+  "metricas_clave": {
+    "validacion_atencion": 0.837,
+    "validacion_sin_atencion": 0.6725,
+    "validacion_torneo": 0.972,
+    "torneo_cuatro_cifras": 0.95
+  },
+  "checkpoints": {
+    "base_con_atencion": {
+      "ruta": "modelos_lab6/base_con_atencion.pt",
+      "parametros": 186767,
+      "huella": "7dd56f9acf5d"
+    },
+    "base_sin_atencion": {
+      "ruta": "modelos_lab6/base_sin_atencion.pt",
+      "parametros": 186767,
+      "huella": "11a6346d696d"
+    },
+    "torneo": {
+      "ruta": "modelos_lab6/torneo_22193.pt",
+      "parametros": 186767,
+      "huella": "94e198ec75ec"
+    }
+  },
+  "documentos": {
+    "informe_paginas": 15,
+    "presentacion_paginas": 10
+  },
+  "pendientes_manuales": [
+    "Ejecutar la celda de registro del formulario con conexión a internet.",
+    "Guardar el notebook después del envío y conservar la misma huella.",
+    "Durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda."
+  ]
+}
