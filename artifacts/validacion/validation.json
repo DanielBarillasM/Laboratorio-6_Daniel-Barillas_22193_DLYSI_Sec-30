@@ -1,6 +1,6 @@
 {
-  "estado": "APROBADO",
-  "checks_superados": 43,
+  "estado": "APROBADO_LAB6_Y_TORNEO_REGISTRADO",
+  "checks_superados": 47,
   "comprobaciones": [
     "El notebook conserva las 33 celdas oficiales.",
     "La verificación oficial del Bloque 2 está intacta.",
@@ -11,16 +11,20 @@
     "No quedan TODO en celdas de código.",
     "Nombre y carné están completos.",
     "El entrenamiento conserva MAX_CIFRAS=4.",
-    "La clave del torneo permanece en None.",
+    "La celda del torneo conserva la clave oficial 5978.",
     "No hay salidas de error en el notebook.",
     "Las 15 celdas hasta Entrega tienen conteos consecutivos.",
     "La celda de Entrega fue ejecutada al final de la secuencia.",
     "El notebook conserva la confirmación del formulario.",
     "La salida de Entrega conserva la huella 94e198ec75ec.",
-    "La celda del torneo no fue ejecutada antes de recibir la clave.",
+    "La celda del torneo fue ejecutada después de la entrega.",
+    "El notebook conserva el puntaje oficial 80.5/100.",
+    "El formulario confirmó el envío del torneo.",
     "La verificación de atención imprimió OK.",
     "La verificación del decoder imprimió OK.",
     "Los cinco contraejemplos rompen el modelo final.",
+    "El artefacto del torneo conserva la clave 5978 y el puntaje 80.5.",
+    "La huella 94e198ec75ec permaneció idéntica durante el torneo.",
     "La exactitud base con atención supera 0.60.",
     "La exactitud congelada del torneo es 0.972.",
     "La exactitud del torneo en cuatro cifras es 0.95.",
@@ -39,7 +43,7 @@
     "La huella de torneo coincide: 94e198ec75ec.",
     "El checkpoint torneo conserva 15 épocas.",
     "Las siete figuras exportadas existen y no están vacías.",
-    "El informe compilado tiene 14 páginas.",
+    "El informe compilado tiene 16 páginas.",
     "La presentación compilada tiene 10 páginas.",
     "Los ocho bloques tienen documentación separada.",
     "La presentación HTML contiene 15 diapositivas.",
@@ -50,7 +54,15 @@
     "validacion_atencion": 0.837,
     "validacion_sin_atencion": 0.6725,
     "validacion_torneo": 0.972,
-    "torneo_cuatro_cifras": 0.95
+    "torneo_cuatro_cifras": 0.95,
+    "puntaje_oficial_torneo": 80.5
+  },
+  "torneo_oficial": {
+    "clave": 5978,
+    "puntaje": 80.5,
+    "huella_antes": "94e198ec75ec",
+    "huella_despues": "94e198ec75ec",
+    "formulario_confirmado": true
   },
   "checkpoints": {
     "base_con_atencion": {
@@ -70,10 +82,8 @@
     }
   },
   "documentos": {
-    "informe_paginas": 14,
+    "informe_paginas": 16,
     "presentacion_paginas": 10
   },
-  "pendientes_manuales": [
-    "Laboratorio 7: durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda."
-  ]
+  "pendientes_manuales": []
 }

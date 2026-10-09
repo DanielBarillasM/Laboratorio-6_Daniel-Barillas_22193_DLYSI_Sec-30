@@ -9,6 +9,7 @@
   <img alt="Atención" src="https://img.shields.io/badge/Atenci%C3%B3n-Bahdanau-0066ff">
   <img alt="CPU" src="https://img.shields.io/badge/entrenamiento-CPU-1e1e1e">
   <img alt="Estado" src="https://img.shields.io/badge/notebook-ejecutado-00a6a6">
+  <img alt="Torneo" src="https://img.shields.io/badge/torneo-80.5%2F100-0066ff">
 </p>
 
 <p><em>¿Puede una red recurrente aprender a sumar y restar observando únicamente ejemplos?</em></p>
@@ -28,9 +29,9 @@ atención dinámica y una variante de torneo que invierte únicamente el orden d
 > **97.20 %** y la exactitud en operandos de cuatro cifras de **70.33 %** a **95.00 %**, sin aumentar
 > los **186,767 parámetros** del modelo.
 
-El notebook oficial está implementado y ejecutado en orden hasta la celda de **Entrega**. El formulario
-del curso confirmó `OK - registro enviado al formulario del curso` y la huella se mantuvo en
-`94e198ec75ec`. La sección del torneo no se ejecutó: `CLAVE = None` se conserva para el Laboratorio 7.
+El notebook oficial quedó ejecutado en orden hasta el torneo. Con la clave `5978`, la calculadora obtuvo
+**80.5/100** y el formulario confirmó el envío. El checkpoint se cargó sin reentrenar y la huella se
+mantuvo en `94e198ec75ec` antes y después de la inferencia.
 
 ## Identificación
 
@@ -42,6 +43,21 @@ del curso confirmó `OK - registro enviado al formulario del curso` y la huella 
 | Sección | 30 |
 | Modalidad | Individual |
 | Repositorio | [GitHub](https://github.com/DanielBarillasM/Laboratorio-6_Daniel-Barillas_22193_DLYSI_Sec-30) |
+
+## Resultado oficial del torneo · Laboratorio 7
+
+| Nivel | Aciertos | Puntaje |
+|---|---:|---:|
+| 1 · Calentamiento | 20/20 | **15.0/15** |
+| 2 · Cuatro cifras | 17/20 | **25.5/30** |
+| 3 · Acarreos en cadena | 16/16 | **40.0/40** |
+| 4 · Jefe final | 0/10 | **0.0/15** |
+| **Total** | **53/66** | **80.5/100** |
+
+El resultado confirma la lectura experimental previa: el orden de salida invertido resolvió todos los
+acarreos encadenados de la prueba, pero no extrapoló a operandos de cinco cifras. Las respuestas completas,
+los problemas y la trazabilidad del envío están en
+[`artifacts/metricas/torneo_5978.json`](artifacts/metricas/torneo_5978.json).
 
 ## Resultados reproducidos
 
@@ -205,8 +221,8 @@ Edge o Firefox. No necesita servidor ni conexión a internet. Incluye:
 - estilos de impresión para exportarla a PDF desde el navegador;
 - las siete figuras reales del notebook, sin duplicar archivos ni fabricar resultados.
 
-La presentación refleja el estado final: el registro del formulario fue aceptado, la huella no cambió y
-la clave del torneo permanece en `None` porque corresponde al Laboratorio 7.
+La presentación refleja el cierre completo: registro inicial y torneo aceptados, puntaje `80.5/100` y
+huella `94e198ec75ec` preservada sin reentrenamiento.
 
 ## Decisiones experimentales
 
@@ -233,7 +249,8 @@ la clave del torneo permanece en `None` porque corresponde al Laboratorio 7.
 - [x] Notebook ejecutado sin errores hasta la celda de Entrega.
 - [x] Pesos y huellas preservados.
 - [x] Envío del formulario confirmado con el mensaje oficial y huella `94e198ec75ec`.
-- [ ] Ejecución de la clave secreta durante el torneo del Laboratorio 7.
+- [x] Clave `5978` ejecutada durante el torneo del Laboratorio 7.
+- [x] Puntaje `80.5/100` registrado y huella verificada antes y después.
 
 ## Documentos
 

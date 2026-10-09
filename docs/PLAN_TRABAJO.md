@@ -33,8 +33,9 @@ Construir, interpretar y validar una calculadora neuronal `seq2seq` que produzca
 
 La comparación principal modifica únicamente `invertir_salida`. Se considerará útil si mejora la exactitud de cuatro cifras y de acarreos en cadena sin superar el límite de parámetros. Las cifras cinco y seis se reportan como evaluación fuera de distribución y nunca se usan para entrenar.
 
-## Cierre de entrega y acción futura
+## Cierre de entrega y torneo
 
 El registro del Laboratorio 6 fue enviado desde un kernel reiniciado y el notebook conserva la confirmación
-del formulario junto con la huella `94e198ec75ec`. La clave secreta continúa reservada para el Laboratorio 7:
-la última celda no se ejecutó y `CLAVE = None` permanece intacto hasta que el profesor revele la clave.
+del formulario junto con la huella `94e198ec75ec`. El 9 de octubre de 2026 se cargó directamente el
+checkpoint congelado, sin reentrenamiento, y se ejecutó la clave `5978`. El resultado fue `80.5/100` y la
+huella permaneció idéntica antes y después. El formulario del torneo confirmó el envío.

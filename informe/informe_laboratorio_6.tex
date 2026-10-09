@@ -90,9 +90,9 @@ número de parámetros, ejemplos o épocas. Sin embargo, el modelo obtuvo 0\% en
 en cinco casos válidos cuidadosamente buscados. La conclusión es doble: la inductiva escogida facilita el
 acarreo dentro de la distribución, pero no produce un algoritmo simbólico universal.
 
-\callout{Estado de entrega.}{El notebook fue ejecutado desde un kernel reiniciado hasta la celda de
-Entrega. El formulario confirmó el registro y la huella del modelo de torneo se mantuvo en
-\code{94e198ec75ec}. La clave del torneo sigue en \code{None} porque corresponde al Laboratorio 7.}
+\callout{Estado final.}{El registro del Laboratorio 6 y el torneo fueron confirmados por el formulario.
+Con la clave \code{5978}, el modelo obtuvo \textbf{80.5/100}. El checkpoint se cargó sin reentrenar y su
+huella permaneció en \code{94e198ec75ec} antes y después de la inferencia.}
 
 \section{Problema, objetivos y alcance}
 
@@ -131,6 +131,7 @@ Exactitud base $\geq 0.60$ & Exactitud 0.837 & Cumple \\
 Máximo 750,000 parámetros & 186,767 parámetros & Cumple \\
 Cinco trampas válidas & Cinco fallos reproducidos & Cumple \\
 Registro externo & Mensaje oficial de confirmación visible & Cumple \\
+Torneo del Laboratorio 7 & Clave 5978; puntaje 80.5/100; huella intacta & Cumple \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -311,6 +312,32 @@ La hipótesis se cumple: invertir la salida mejora la métrica objetivo y no sac
 La mejora es compatible con una reducción de la dificultad temporal del acarreo. No obstante, el cero por
 ciento fuera de rango muestra que la intervención mejora interpolación y no extrapolación de longitud.
 
+\subsection{Resultado oficial del torneo: clave 5978}
+
+El 9 de octubre de 2026 se cargó directamente el checkpoint congelado
+\code{torneo\_22193.pt}; no se ejecutó entrenamiento. La huella fue
+\code{94e198ec75ec} antes y después, y el formulario confirmó el envío del torneo.
+
+\begin{table}[H]\centering
+\caption{Puntaje oficial registrado en el Laboratorio 7.}
+\begin{tabular}{lrrr}
+\toprule Nivel & Aciertos & Puntaje & Máximo \\
+\midrule
+1 · Calentamiento & 20/20 & 15.0 & 15 \\
+2 · Cuatro cifras & 17/20 & 25.5 & 30 \\
+3 · Acarreos en cadena & 16/16 & 40.0 & 40 \\
+4 · Jefe final & 0/10 & 0.0 & 15 \\
+\midrule
+\textbf{Total} & \textbf{53/66} & \textbf{80.5} & \textbf{100} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El desempeño perfecto en acarreos encadenados respalda la utilidad de generar desde las unidades. En
+cambio, el nivel de cinco cifras confirma la limitación anticipada: la red no extrapola a longitudes no
+vistas. En cuatro cifras falló tres restas, todas con préstamos, por lo que aún existe margen de mejora
+dentro de la distribución.
+
 \section{Interpretación de la atención}
 
 \begin{figure}[H]\centering
@@ -380,10 +407,10 @@ python scripts/exportar_figuras.py
 python scripts/verificar_entrega.py
 \end{verbatim}
 
-El notebook contiene 15 celdas de código ejecutadas con conteos consecutivos y sin errores hasta la
-entrega. La salida del formulario confirma el envío y repite la huella \code{94e198ec75ec}. La única celda
-sin ejecutar es la del torneo; \code{CLAVE=None} se mantiene hasta que el profesor revele la clave del
-Laboratorio 7.
+El notebook contiene 16 celdas de código ejecutadas con conteos consecutivos y sin errores, incluida la
+celda del torneo. La clave \code{5978}, el puntaje \code{80.5/100} y la confirmación del formulario quedan
+visibles. El artefacto \code{artifacts/metricas/torneo\_5978.json} conserva problemas, predicciones,
+respuestas correctas, puntajes y las huellas anterior y posterior.
 
 La metodología de producción y revisión de visualizaciones siguió principios de evidencia, legibilidad y
 reproducción asistida descritos por Kassis et al. \cite{kassis2026}; esa referencia documenta el proceso,
@@ -401,12 +428,14 @@ no sustituye las fuentes académicas de atención y seq2seq.
   \item La generalización de longitud es deficiente: el modelo de torneo cae a 0\% con cinco y seis cifras.
   \item Los fallos en acarreos globales y préstamos entre ceros prueban que una métrica promedio alta debe
   complementarse con evaluación adversarial.
+  \item En el torneo oficial, el modelo obtuvo 80.5/100: resolvió 16/16 acarreos encadenados, pero 0/10
+  casos de cinco cifras, en concordancia con el análisis de generalización.
 \end{enumerate}
 
 Como trabajo futuro, se recomienda repetir el experimento con múltiples semillas, separar conjuntos por
 familias de acarreo y préstamo, evaluar exactitud por token además de cadena completa y estudiar currículos
-que aumenten progresivamente la longitud. Cualquier cambio para el torneo deberá respetar la arquitectura,
-el máximo de cuatro cifras durante entrenamiento y la huella ya registrada.
+que aumenten progresivamente la longitud. El resultado oficial debe conservarse con la clave, las respuestas
+y la huella registrada para mantener trazabilidad completa.
 
 \addcontentsline{toc}{section}{Referencias}
 \begin{thebibliography}{9}

@@ -18,6 +18,7 @@ FINAL = ROOT / "notebooks" / "01_calculadora_neuronal_final.ipynb"
 OFFICIAL = ROOT / "S13_Lab06_Calculadora_Neuronal_ESTUDIANTE.ipynb"
 METRICS = ROOT / "artifacts" / "metricas" / "resultados.json"
 TRAPS = ROOT / "artifacts" / "metricas" / "trampas_candidatas.json"
+TOURNAMENT = ROOT / "artifacts" / "metricas" / "torneo_5978.json"
 OUTPUT = ROOT / "artifacts" / "validacion" / "validation.json"
 
 
@@ -60,8 +61,8 @@ def main() -> None:
     require('NOMBRE = "Pablo Daniel Barillas Moreno"' in code and 'CARNE = "22193"' in code,
             "Nombre y carné están completos.", checks)
     require("MAX_CIFRAS = 4" in code, "El entrenamiento conserva MAX_CIFRAS=4.", checks)
-    require("CLAVE = None" in final.cells[32].source,
-            "La clave del torneo permanece en None.", checks)
+    require("CLAVE = 5978" in final.cells[32].source,
+            "La celda del torneo conserva la clave oficial 5978.", checks)
 
     errors = [(i, output.get("ename")) for i, cell in enumerate(final.cells)
               if cell.cell_type == "code" for output in cell.get("outputs", [])
@@ -77,8 +78,13 @@ def main() -> None:
             "El notebook conserva la confirmación del formulario.", checks)
     require("94e198ec75ec" in registration_text,
             "La salida de Entrega conserva la huella 94e198ec75ec.", checks)
-    require(final.cells[32].execution_count is None,
-            "La celda del torneo no fue ejecutada antes de recibir la clave.", checks)
+    tournament_text = stream_text(final.cells[32])
+    require(final.cells[32].execution_count == 16,
+            "La celda del torneo fue ejecutada después de la entrega.", checks)
+    require("TOTAL                     80.5 / 100" in tournament_text,
+            "El notebook conserva el puntaje oficial 80.5/100.", checks)
+    require("OK - registro enviado al formulario del curso" in tournament_text,
+            "El formulario confirmó el envío del torneo.", checks)
     require("OK - atención aditiva correcta" in stream_text(final.cells[10]),
             "La verificación de atención imprimió OK.", checks)
     require("OK - paso del decoder correcto" in stream_text(final.cells[14]),
@@ -88,6 +94,11 @@ def main() -> None:
 
     metrics = json.loads(METRICS.read_text(encoding="utf-8"))
     traps = json.loads(TRAPS.read_text(encoding="utf-8"))
+    tournament = json.loads(TOURNAMENT.read_text(encoding="utf-8"))
+    require(tournament["clave"] == 5978 and tournament["puntaje_total"] == 80.5,
+            "El artefacto del torneo conserva la clave 5978 y el puntaje 80.5.", checks)
+    require(tournament["huella_antes"] == tournament["huella_despues"] == "94e198ec75ec",
+            "La huella 94e198ec75ec permaneció idéntica durante el torneo.", checks)
     require(metrics["validacion"]["base_con_atencion"] >= 0.60,
             "La exactitud base con atención supera 0.60.", checks)
     require(metrics["validacion"]["torneo"] == 0.972,
@@ -159,7 +170,7 @@ def main() -> None:
             "El README enlaza la presentación HTML interactiva.", checks)
 
     result = {
-        "estado": "APROBADO",
+        "estado": "APROBADO_LAB6_Y_TORNEO_REGISTRADO",
         "checks_superados": len(checks),
         "comprobaciones": checks,
         "metricas_clave": {
@@ -167,12 +178,18 @@ def main() -> None:
             "validacion_sin_atencion": metrics["validacion"]["base_sin_atencion"],
             "validacion_torneo": metrics["validacion"]["torneo"],
             "torneo_cuatro_cifras": metrics["por_cifras"]["torneo"]["4"],
+            "puntaje_oficial_torneo": tournament["puntaje_total"],
+        },
+        "torneo_oficial": {
+            "clave": tournament["clave"],
+            "puntaje": tournament["puntaje_total"],
+            "huella_antes": tournament["huella_antes"],
+            "huella_despues": tournament["huella_despues"],
+            "formulario_confirmado": tournament["formulario_confirmado"],
         },
         "checkpoints": checkpoint_report,
         "documentos": {"informe_paginas": report_pages, "presentacion_paginas": presentation_pages},
-        "pendientes_manuales": [
-            "Laboratorio 7: durante el torneo, escribir la clave revelada por el profesor y ejecutar la última celda.",
-        ],
+        "pendientes_manuales": [],
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(

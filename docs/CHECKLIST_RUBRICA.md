@@ -15,12 +15,15 @@
 - [x] Reflexión final basada en un mapa de atención.
 - [x] Notebook ejecutado en orden y sin errores hasta la celda de Entrega.
 - [x] `modelos_lab6/` conservada; huella del torneo `94e198ec75ec`.
-- [x] `CLAVE = None` antes del torneo.
+- [x] `CLAVE = None` se conservó hasta que el profesor reveló la clave.
 - [x] Registro del formulario enviado; el notebook conserva el mensaje oficial `OK`.
 - [x] Huella posterior al registro verificada: `94e198ec75ec`.
-- [ ] Clave secreta ejecutada durante el torneo del Laboratorio 7.
+- [x] Clave `5978` ejecutada en la celda oficial del torneo.
+- [x] Puntaje del torneo registrado: `80.5/100`.
+- [x] Huella idéntica antes y después del torneo: `94e198ec75ec`.
+- [x] Formulario del torneo confirmado con el mensaje oficial `OK`.
 
 ## Estado
 
-El Laboratorio 6 está completo y listo para Canvas. El único paso futuro es la celda del torneo del
-Laboratorio 7, que debe conservar `CLAVE = None` hasta que el profesor revele la clave.
+El Laboratorio 6 y la ejecución correspondiente al Laboratorio 7 están completos. El torneo se ejecutó
+sin reentrenar el modelo, obtuvo `80.5/100` y preservó la huella registrada.
